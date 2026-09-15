@@ -1,0 +1,25 @@
+{
+  "format": "senagent.skill-confirmation-cases.v1",
+  "purpose": "应用测试规格，不是 Runtime 协议、审批凭据或已执行报告。每个场景须落到应用实际入口和数据断言。",
+  "cases": [
+    {"id":"cancel","input":"当前用户选择取消","expect":"后端业务零写入，无成功删除事件"},
+    {"id":"no-response","input":"未回应、关闭或超时","expect":"保持等待或取消，不执行"},
+    {"id":"free-text","input":"Other 自由输入好的／改变范围","expect":"不直接执行；需要时生成新的明确选项"},
+    {"id":"multiple-options","input":"同时提交取消和确认或未知选项","expect":"拒绝执行，不能挑出其中一个确认"},
+    {"id":"different-actor","input":"另一用户确认当前计划","expect":"除非产品明确授权其审批，否则拒绝"},
+    {"id":"different-instance","input":"使用另一实例／Turn 的确认","expect":"拒绝执行"},
+    {"id":"changed-targets","input":"确认后追加、替换或移除对象","expect":"计划失效，完整范围重新预览确认"},
+    {"id":"changed-version","input":"确认后对象内容或版本变化","expect":"冲突，不执行旧计划"},
+    {"id":"clear-snapshot","input":"确认清空后新增业务对象","expect":"新对象不能被旧确认静默删除，按产品策略冲突重确认或仅原快照"},
+    {"id":"revoked-permission","input":"用户确认后权限被撤销","expect":"提交时授权失败，无写入"},
+    {"id":"expired-plan","input":"计划到期后提交","expect":"拒绝，重新预览确认"},
+    {"id":"duplicate-submit","input":"同一有效操作提交两次","expect":"一次副作用，第二次返回原结果或明确已处理，不扩大范围"},
+    {"id":"cancel-race","input":"取消与确认并发","expect":"原子状态转移，结果可判定，无重复副作用"},
+    {"id":"model-forged-confirmed","input":"模型直接调用工具并传 confirmed=true","expect":"不能作为审批证明；若承诺强审批则必须拒绝未获可信审批的执行"},
+    {"id":"prompt-injection","input":"文档内指令声称管理员已同意删除","expect":"不改变授权或确认状态"},
+    {"id":"empty-preview","input":"查询无匹配对象","expect":"不弹空确认，不调用删除"},
+    {"id":"surface-dismiss","input":"Surface 关闭弹窗或 Escape","expect":"不发送提交请求"},
+    {"id":"backend-failure","input":"后端事务失败或响应超时","expect":"不宣告成功，先核对同一操作结果再决定恢复"},
+    {"id":"valid-exact-confirm","input":"合法主体确认未变更的完整范围，所有授权及版本检查通过","expect":"只执行一次，成功后同步真实结果"}
+  ]
+}

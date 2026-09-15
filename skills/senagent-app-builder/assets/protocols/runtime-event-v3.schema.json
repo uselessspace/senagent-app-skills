@@ -1,0 +1,744 @@
+{
+  "$defs": {
+    "RuntimeEventType": {
+      "enum": [
+        "instance.created",
+        "instance.status.changed",
+        "instance.member.added",
+        "instance.member.removed",
+        "instance.owner.transferred",
+        "instance.template.reconciled",
+        "turn.started",
+        "turn.completed",
+        "turn.failed",
+        "user.message.created",
+        "message.completed",
+        "group.message.completed",
+        "choice.required",
+        "choice.resolved",
+        "agent.progress",
+        "agent.stage.changed",
+        "agent.state.changed",
+        "agent.tool.invocation.started",
+        "agent.tool.invocation.completed",
+        "agent.tool.invocation.failed",
+        "agent.model.invocation.started",
+        "agent.model.invocation.completed",
+        "agent.model.invocation.failed",
+        "agent.primary_model.invocation.started",
+        "agent.primary_model.invocation.completed",
+        "agent.primary_model.invocation.failed",
+        "surface.model.invocation.started",
+        "surface.model.invocation.completed",
+        "surface.model.invocation.failed",
+        "surface.command",
+        "surface.command.acknowledged"
+      ],
+      "type": "string"
+    }
+  },
+  "$id": "https://schemas.senagent.dev/runtime-event-v3.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "instance.created"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "status",
+              "template_version",
+              "agent_states"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "instance.status.changed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "status"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "instance.template.reconciled"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "previous_template_version",
+              "template_version",
+              "agent_states"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "turn.started"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "status",
+              "source"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "turn.completed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "status"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "turn.failed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "error",
+              "message"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "user.message.created"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "message_id",
+              "text",
+              "attachments",
+              "delivery_target",
+              "source",
+              "invocation_origin"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "message.completed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "format",
+              "text"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "choice.required"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "id",
+              "question",
+              "options"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "choice.resolved"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "choice_id",
+              "response"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.progress"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "label",
+              "detail"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.stage.changed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "from",
+              "to",
+              "label",
+              "summary",
+              "terminal"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.state.changed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "patch",
+              "data"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.tool.invocation.started"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "invocation_id",
+              "tool_id",
+              "label"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.tool.invocation.completed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "invocation_id",
+              "tool_id",
+              "label",
+              "duration_ms"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.tool.invocation.failed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "invocation_id",
+              "tool_id",
+              "label",
+              "duration_ms",
+              "error"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.model.invocation.started"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "model_capability_id",
+              "capability_kind"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.model.invocation.completed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "model_capability_id",
+              "capability_kind",
+              "gateway_invocation_id",
+              "model_alias"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "agent.model.invocation.failed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "model_capability_id",
+              "capability_kind",
+              "error",
+              "message"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "surface.model.invocation.started"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "operation_invocation_id",
+              "surface_id",
+              "operation_id",
+              "model_capability_id",
+              "capability_kind"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "surface.model.invocation.completed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "operation_invocation_id",
+              "surface_id",
+              "operation_id",
+              "model_capability_id",
+              "capability_kind",
+              "gateway_invocation_id",
+              "model_alias",
+              "usage",
+              "cost_status",
+              "settlement_currency",
+              "settlement_amount_cny",
+              "points",
+              "replayed"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "surface.model.invocation.failed"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "operation_invocation_id",
+              "surface_id",
+              "operation_id",
+              "model_capability_id",
+              "capability_kind",
+              "error",
+              "message"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "surface.command"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "id",
+              "surface_id",
+              "target",
+              "name",
+              "payload",
+              "requires_ack"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "surface.command.acknowledged"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "additionalProperties": true,
+            "required": [
+              "command_id",
+              "status",
+              "result"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "actor_display_name": {
+      "default": "",
+      "title": "Actor Display Name",
+      "type": "string"
+    },
+    "actor_subject_id": {
+      "default": "",
+      "title": "Actor Subject Id",
+      "type": "string"
+    },
+    "actor_username": {
+      "default": "",
+      "title": "Actor Username",
+      "type": "string"
+    },
+    "agent_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Agent Id"
+    },
+    "application_instance_id": {
+      "title": "Application Instance Id",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "integer"
+    },
+    "payload": {
+      "additionalProperties": true,
+      "title": "Payload",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "3.0",
+      "default": "3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "template_id": {
+      "title": "Template Id",
+      "type": "string"
+    },
+    "timestamp": {
+      "format": "date-time",
+      "title": "Timestamp",
+      "type": "string"
+    },
+    "turn_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Turn Id"
+    },
+    "type": {
+      "$ref": "#/$defs/RuntimeEventType"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "timestamp",
+    "application_instance_id",
+    "template_id"
+  ],
+  "title": "RuntimeEvent",
+  "type": "object"
+}

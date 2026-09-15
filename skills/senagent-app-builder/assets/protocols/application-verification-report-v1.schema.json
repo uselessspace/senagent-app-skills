@@ -1,0 +1,221 @@
+{
+  "$defs": {
+    "ApplicationVerificationCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Command",
+          "type": "array"
+        },
+        "duration_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exit Code"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "message"
+      ],
+      "title": "ApplicationVerificationCheck",
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.senagent.dev/application-verification-report-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Versioned, language-neutral result shared by CLI and registration workflows.",
+  "properties": {
+    "achieved_level": {
+      "enum": [
+        "none",
+        "structure_valid",
+        "runtime_ready",
+        "function_ready"
+      ],
+      "title": "Achieved Level",
+      "type": "string"
+    },
+    "application_id": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Application Id"
+    },
+    "application_root": {
+      "maxLength": 4096,
+      "minLength": 1,
+      "title": "Application Root",
+      "type": "string"
+    },
+    "application_version": {
+      "anyOf": [
+        {
+          "maxLength": 32,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Application Version"
+    },
+    "backend_build_system": {
+      "anyOf": [
+        {
+          "enum": [
+            "uv",
+            "go_modules"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Backend Build System"
+    },
+    "backend_language": {
+      "anyOf": [
+        {
+          "enum": [
+            "python",
+            "go"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Backend Language"
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/ApplicationVerificationCheck"
+      },
+      "minItems": 1,
+      "title": "Checks",
+      "type": "array"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "log_path": {
+      "anyOf": [
+        {
+          "maxLength": 4096,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Log Path"
+    },
+    "profile": {
+      "enum": [
+        "static",
+        "build",
+        "smoke",
+        "full"
+      ],
+      "title": "Profile",
+      "type": "string"
+    },
+    "protocol": {
+      "const": "senagent.application-verification-report.v1",
+      "default": "senagent.application-verification-report.v1",
+      "title": "Protocol",
+      "type": "string"
+    },
+    "runtime_version": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Runtime Version",
+      "type": "string"
+    },
+    "source_digest": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Digest"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "runtime_version",
+    "profile",
+    "status",
+    "achieved_level",
+    "application_root",
+    "checks"
+  ],
+  "title": "ApplicationVerificationReport",
+  "type": "object"
+}

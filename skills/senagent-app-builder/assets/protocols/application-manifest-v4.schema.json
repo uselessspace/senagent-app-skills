@@ -1,0 +1,1227 @@
+{
+  "$defs": {
+    "AgentDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "backend_tool_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Backend Tool Ids",
+          "type": "array"
+        },
+        "data_permissions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Data Permissions",
+          "type": "array"
+        },
+        "delegate_to_agent_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Delegate To Agent Ids",
+          "type": "array"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "instructions": {
+          "default": "AGENT.md",
+          "title": "Instructions",
+          "type": "string"
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/AgentLifecycleDefinition"
+        },
+        "model_policy": {
+          "$ref": "#/$defs/AgentModelPolicy"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "recent_chat_context_limit": {
+          "default": 50,
+          "maximum": 50,
+          "minimum": 0,
+          "title": "Recent Chat Context Limit",
+          "type": "integer"
+        },
+        "runtime_tool_ids": {
+          "items": {
+            "$ref": "#/$defs/RuntimeToolId"
+          },
+          "title": "Runtime Tool Ids",
+          "type": "array"
+        },
+        "skills": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Skills",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "model_policy",
+        "runtime_tool_ids",
+        "delegate_to_agent_ids",
+        "data_permissions",
+        "lifecycle"
+      ],
+      "title": "AgentDefinition",
+      "type": "object"
+    },
+    "AgentLifecycleDefinition": {
+      "additionalProperties": false,
+      "description": "智能体自身的阶段图，不代表整个应用实例或任务。",
+      "properties": {
+        "initial_stage": {
+          "title": "Initial Stage",
+          "type": "string"
+        },
+        "stage_migrations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Stage Migrations",
+          "type": "object"
+        },
+        "stages": {
+          "items": {
+            "$ref": "#/$defs/AgentStageDefinition"
+          },
+          "minItems": 1,
+          "title": "Stages",
+          "type": "array"
+        }
+      },
+      "required": [
+        "initial_stage",
+        "stages"
+      ],
+      "title": "AgentLifecycleDefinition",
+      "type": "object"
+    },
+    "AgentModelPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_dynamic_selection": {
+          "default": true,
+          "title": "Allow Dynamic Selection",
+          "type": "boolean"
+        },
+        "available_model_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Available Model Ids",
+          "type": "array"
+        },
+        "primary_model_id": {
+          "title": "Primary Model Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "primary_model_id",
+        "available_model_ids"
+      ],
+      "title": "AgentModelPolicy",
+      "type": "object"
+    },
+    "AgentStageDefinition": {
+      "additionalProperties": false,
+      "description": "智能体自身生命周期中的一个可持久化阶段。",
+      "properties": {
+        "allowed_next": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Next",
+          "type": "array"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "terminal": {
+          "default": false,
+          "title": "Terminal",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "AgentStageDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendBuildDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_path": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Path"
+        },
+        "command": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Command",
+          "type": "array"
+        }
+      },
+      "required": [
+        "command"
+      ],
+      "title": "ApplicationBackendBuildDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendDefinition": {
+      "additionalProperties": false,
+      "description": "可独立部署的常驻 HTTP 服务契约；Runtime 不加载其代码。",
+      "properties": {
+        "build": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationBackendBuildDefinition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "data_scope": {
+          "default": "instance",
+          "enum": [
+            "instance",
+            "organization"
+          ],
+          "title": "Data Scope",
+          "type": "string"
+        },
+        "deployment": {
+          "$ref": "#/$defs/ApplicationBackendDeploymentDefinition"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Description",
+          "type": "string"
+        },
+        "development": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationBackendDevelopmentDefinition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "health": {
+          "$ref": "#/$defs/ApplicationBackendHealthDefinition"
+        },
+        "implementation": {
+          "$ref": "#/$defs/ApplicationBackendImplementationDefinition"
+        },
+        "protocol": {
+          "const": "senagent.application-backend-http.v2",
+          "title": "Protocol",
+          "type": "string"
+        },
+        "request_timeout_seconds": {
+          "default": 120,
+          "exclusiveMinimum": 0,
+          "maximum": 600,
+          "title": "Request Timeout Seconds",
+          "type": "number"
+        },
+        "startup_timeout_seconds": {
+          "default": 30,
+          "exclusiveMinimum": 0,
+          "maximum": 300,
+          "title": "Startup Timeout Seconds",
+          "type": "number"
+        },
+        "tools": {
+          "items": {
+            "$ref": "#/$defs/ApplicationBackendToolDefinition"
+          },
+          "title": "Tools",
+          "type": "array"
+        },
+        "verification": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApplicationBackendVerificationDefinition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "protocol",
+        "implementation",
+        "deployment"
+      ],
+      "title": "ApplicationBackendDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendDeploymentDefinition": {
+      "additionalProperties": false,
+      "description": "应用后端的部署声明；业务协议始终是 HTTP。",
+      "properties": {
+        "base_url": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Base Url"
+        },
+        "command": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Command",
+          "type": "array"
+        },
+        "container_port": {
+          "default": 8080,
+          "maximum": 65535,
+          "minimum": 1,
+          "title": "Container Port",
+          "type": "integer"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image"
+        },
+        "mode": {
+          "default": "managed_process",
+          "enum": [
+            "managed_process",
+            "managed_container",
+            "external"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "sandbox": {
+          "$ref": "#/$defs/ApplicationBackendSandboxDefinition"
+        },
+        "service_token_env": {
+          "anyOf": [
+            {
+              "pattern": "^SENAGENT_APPLICATION_EXTERNAL_[A-Z0-9_]{1,96}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Service Token Env"
+        }
+      },
+      "title": "ApplicationBackendDeploymentDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendDevelopmentDefinition": {
+      "additionalProperties": false,
+      "description": "托管应用后端在开发模式下需要监测的源码路径。",
+      "properties": {
+        "watch_paths": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Watch Paths",
+          "type": "array"
+        }
+      },
+      "required": [
+        "watch_paths"
+      ],
+      "title": "ApplicationBackendDevelopmentDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendHealthDefinition": {
+      "additionalProperties": false,
+      "description": "Runtime 用于监督应用后端进程的标准健康检查端点。",
+      "properties": {
+        "liveness_path": {
+          "default": "/health/live",
+          "pattern": "^/",
+          "title": "Liveness Path",
+          "type": "string"
+        },
+        "readiness_path": {
+          "default": "/health/ready",
+          "pattern": "^/",
+          "title": "Readiness Path",
+          "type": "string"
+        },
+        "startup_path": {
+          "default": "/health/startup",
+          "pattern": "^/",
+          "title": "Startup Path",
+          "type": "string"
+        }
+      },
+      "title": "ApplicationBackendHealthDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendImplementationDefinition": {
+      "additionalProperties": false,
+      "description": "Build-tool selection for the application-owned backend source tree.",
+      "properties": {
+        "build_system": {
+          "enum": [
+            "uv",
+            "go_modules"
+          ],
+          "title": "Build System",
+          "type": "string"
+        },
+        "language": {
+          "enum": [
+            "python",
+            "go"
+          ],
+          "title": "Language",
+          "type": "string"
+        },
+        "version_constraint": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Version Constraint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "language",
+        "version_constraint",
+        "build_system"
+      ],
+      "title": "ApplicationBackendImplementationDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendSandboxDefinition": {
+      "additionalProperties": false,
+      "description": "容器部署时由 Runtime 执行的通用资源和隔离约束。",
+      "properties": {
+        "cpus": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "maximum": 64,
+          "title": "Cpus",
+          "type": "number"
+        },
+        "memory": {
+          "default": "1g",
+          "maxLength": 32,
+          "minLength": 2,
+          "title": "Memory",
+          "type": "string"
+        },
+        "network": {
+          "default": "bridge",
+          "enum": [
+            "bridge",
+            "none"
+          ],
+          "title": "Network",
+          "type": "string"
+        },
+        "pids_limit": {
+          "default": 256,
+          "maximum": 65536,
+          "minimum": 16,
+          "title": "Pids Limit",
+          "type": "integer"
+        },
+        "read_only_root": {
+          "default": true,
+          "title": "Read Only Root",
+          "type": "boolean"
+        }
+      },
+      "title": "ApplicationBackendSandboxDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendToolDefinition": {
+      "additionalProperties": false,
+      "description": "应用后端通过公开协议暴露给 Agent 的工具。",
+      "properties": {
+        "description": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "display_name": {
+          "default": "",
+          "maxLength": 120,
+          "title": "Display Name",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9_]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "input_schema": {
+          "additionalProperties": true,
+          "title": "Input Schema",
+          "type": "object"
+        },
+        "max_calls_per_turn": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Calls Per Turn"
+        },
+        "output_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Output Schema"
+        },
+        "required_data_permissions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Data Permissions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "description"
+      ],
+      "title": "ApplicationBackendToolDefinition",
+      "type": "object"
+    },
+    "ApplicationBackendVerificationDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Command",
+          "type": "array"
+        }
+      },
+      "required": [
+        "command"
+      ],
+      "title": "ApplicationBackendVerificationDefinition",
+      "type": "object"
+    },
+    "InteractionSurfaceDefinition": {
+      "additionalProperties": false,
+      "description": "模板自带的一个前端交互界面。",
+      "properties": {
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/SurfaceActionDefinition"
+          },
+          "title": "Actions",
+          "type": "array"
+        },
+        "capability_operations": {
+          "items": {
+            "$ref": "#/$defs/SurfaceCapabilityOperationDefinition"
+          },
+          "title": "Capability Operations",
+          "type": "array"
+        },
+        "commands": {
+          "items": {
+            "$ref": "#/$defs/SurfaceCommandDefinition"
+          },
+          "title": "Commands",
+          "type": "array"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 500,
+          "title": "Description",
+          "type": "string"
+        },
+        "development": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SurfaceDevelopmentDefinition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "entry_path": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Entry Path"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "default": "web",
+          "enum": [
+            "web",
+            "desktop",
+            "embedded",
+            "chat",
+            "other"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "operations": {
+          "items": {
+            "$ref": "#/$defs/SurfaceOperationDefinition"
+          },
+          "title": "Operations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "InteractionSurfaceDefinition",
+      "type": "object"
+    },
+    "ModelCapabilityDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_kind": {
+          "default": "chat",
+          "enum": [
+            "chat",
+            "image_generation",
+            "speech_recognition",
+            "speech_synthesis",
+            "embedding"
+          ],
+          "title": "Capability Kind",
+          "type": "string"
+        },
+        "default_virtual_model_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default Virtual Model Id"
+        },
+        "description": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "parallel_tool_calls": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parallel Tool Calls"
+        },
+        "strengths": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Strengths",
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Tags",
+          "type": "array"
+        },
+        "thinking_mode": {
+          "anyOf": [
+            {
+              "enum": [
+                "disabled",
+                "enabled"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thinking Mode"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ],
+      "title": "ModelCapabilityDefinition",
+      "type": "object"
+    },
+    "OrganizationDirectoryDeclaration": {
+      "additionalProperties": false,
+      "properties": {
+        "operations": {
+          "items": {
+            "enum": [
+              "organization",
+              "departments",
+              "users"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Operations",
+          "type": "array"
+        },
+        "protocol": {
+          "const": "senagent.organization-directory.v1",
+          "default": "senagent.organization-directory.v1",
+          "title": "Protocol",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operations"
+      ],
+      "title": "OrganizationDirectoryDeclaration",
+      "type": "object"
+    },
+    "RuntimeToolId": {
+      "enum": [
+        "set_agent_stage",
+        "patch_agent_state",
+        "emit_progress",
+        "request_choice",
+        "search_conversation_history",
+        "read_conversation_message",
+        "read_chat_text_attachment",
+        "accept_chat_attachment"
+      ],
+      "type": "string"
+    },
+    "SurfaceActionDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "default": "",
+          "maxLength": 500,
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "payload_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Payload Schema"
+        },
+        "target_agent_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Agent Id"
+        },
+        "version": {
+          "default": "1",
+          "maxLength": 32,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "SurfaceActionDefinition",
+      "type": "object"
+    },
+    "SurfaceCapabilityOperationDefinition": {
+      "additionalProperties": false,
+      "description": "交互界面无需 Agent 推理即可调用的声明式模型能力流水线。",
+      "properties": {
+        "commit_backend_operation": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Commit Backend Operation",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 500,
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "model_capability_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+          "title": "Model Capability Id",
+          "type": "string"
+        },
+        "output_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Output Schema"
+        },
+        "payload_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Payload Schema"
+        },
+        "prepare_backend_operation": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Prepare Backend Operation",
+          "type": "string"
+        },
+        "version": {
+          "default": "1",
+          "maxLength": 32,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "model_capability_id",
+        "prepare_backend_operation",
+        "commit_backend_operation"
+      ],
+      "title": "SurfaceCapabilityOperationDefinition",
+      "type": "object"
+    },
+    "SurfaceCommandDefinition": {
+      "additionalProperties": false,
+      "description": "应用后端可返回给交互界面的稳定导航或同步命令。",
+      "properties": {
+        "kind": {
+          "enum": [
+            "navigation",
+            "synchronization"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "payload_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Payload Schema"
+        },
+        "target": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "target",
+        "kind"
+      ],
+      "title": "SurfaceCommandDefinition",
+      "type": "object"
+    },
+    "SurfaceDevelopmentDefinition": {
+      "additionalProperties": false,
+      "description": "应用自行声明的前端开发构建约定；Runtime 不理解具体前端框架。",
+      "properties": {
+        "build_command": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Build Command",
+          "type": "array"
+        },
+        "install_command": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Install Command"
+        },
+        "watch_paths": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Watch Paths",
+          "type": "array"
+        },
+        "working_directory": {
+          "default": ".",
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Working Directory",
+          "type": "string"
+        }
+      },
+      "required": [
+        "build_command",
+        "watch_paths"
+      ],
+      "title": "SurfaceDevelopmentDefinition",
+      "type": "object"
+    },
+    "SurfaceOperationDefinition": {
+      "additionalProperties": false,
+      "description": "交互界面可调用的应用后端业务操作。",
+      "properties": {
+        "backend_operation": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Backend Operation",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 500,
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-z][a-z0-9._-]{0,95}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "mutates_state": {
+          "default": false,
+          "title": "Mutates State",
+          "type": "boolean"
+        },
+        "output_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Output Schema"
+        },
+        "payload_schema": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Payload Schema"
+        },
+        "version": {
+          "default": "1",
+          "maxLength": 32,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "backend_operation"
+      ],
+      "title": "SurfaceOperationDefinition",
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.senagent.dev/application-manifest-v4.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "可发布的完整 AI 原生应用模板：Agent、后端和交互界面的代码边界。",
+  "properties": {
+    "agent_turn_visibility": {
+      "default": "instance",
+      "enum": [
+        "instance",
+        "actor"
+      ],
+      "title": "Agent Turn Visibility",
+      "type": "string"
+    },
+    "agents": {
+      "items": {
+        "$ref": "#/$defs/AgentDefinition"
+      },
+      "minItems": 1,
+      "title": "Agents",
+      "type": "array"
+    },
+    "backend": {
+      "$ref": "#/$defs/ApplicationBackendDefinition"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 1000,
+      "title": "Description",
+      "type": "string"
+    },
+    "entry_agent_id": {
+      "title": "Entry Agent Id",
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "manifest_protocol": {
+      "const": "senagent.application-manifest.v4",
+      "title": "Manifest Protocol",
+      "type": "string"
+    },
+    "model_capabilities": {
+      "items": {
+        "$ref": "#/$defs/ModelCapabilityDefinition"
+      },
+      "minItems": 1,
+      "title": "Model Capabilities",
+      "type": "array"
+    },
+    "name": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "organization_directory": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OrganizationDirectoryDeclaration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "surfaces": {
+      "items": {
+        "$ref": "#/$defs/InteractionSurfaceDefinition"
+      },
+      "title": "Surfaces",
+      "type": "array"
+    },
+    "version": {
+      "default": "0.1.0",
+      "maxLength": 32,
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "manifest_protocol",
+    "id",
+    "name",
+    "entry_agent_id",
+    "backend",
+    "model_capabilities",
+    "agents"
+  ],
+  "title": "AINativeApplicationTemplate",
+  "type": "object"
+}

@@ -1,0 +1,1195 @@
+{
+  "$defs": {
+    "ModelGatewayAttributionContext": {
+      "additionalProperties": false,
+      "description": "Runtime 发送给独立模型网关的可信、非业务语义归因维度。",
+      "properties": {
+        "agent_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Agent Id",
+          "type": "string"
+        },
+        "application_instance_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Application Instance Id",
+          "type": "string"
+        },
+        "application_template_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Application Template Id",
+          "type": "string"
+        },
+        "application_template_version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Application Template Version",
+          "type": "string"
+        },
+        "client_request_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Client Request Id",
+          "type": "string"
+        },
+        "consumer_system_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Consumer System Id",
+          "type": "string"
+        },
+        "department_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Department Ids",
+          "type": "array"
+        },
+        "idempotency_key": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "initiated_by_subject_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Initiated By Subject Id",
+          "type": "string"
+        },
+        "invocation_origin": {
+          "enum": [
+            "interactive",
+            "delegated",
+            "background",
+            "tool"
+          ],
+          "title": "Invocation Origin",
+          "type": "string"
+        },
+        "model_capability_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Model Capability Id",
+          "type": "string"
+        },
+        "organization_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Organization Id",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "consumer_system_id",
+        "organization_id",
+        "application_template_id",
+        "application_template_version",
+        "application_instance_id",
+        "turn_id",
+        "agent_id",
+        "model_capability_id",
+        "initiated_by_subject_id",
+        "invocation_origin",
+        "client_request_id",
+        "idempotency_key"
+      ],
+      "title": "ModelGatewayAttributionContext",
+      "type": "object"
+    },
+    "ModelGatewayAudioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "content_base64": {
+          "maxLength": 16000000,
+          "minLength": 1,
+          "title": "Content Base64",
+          "type": "string"
+        },
+        "filename": {
+          "default": "audio",
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "media_type": {
+          "enum": [
+            "audio/aac",
+            "audio/flac",
+            "audio/m4a",
+            "audio/mp4",
+            "audio/mpeg",
+            "audio/ogg",
+            "audio/opus",
+            "audio/wav",
+            "audio/webm"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "media_type",
+        "content_base64"
+      ],
+      "title": "ModelGatewayAudioInput",
+      "type": "object"
+    },
+    "ModelGatewayChatMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Content"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "reasoning_content": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reasoning Content"
+        },
+        "role": {
+          "enum": [
+            "system",
+            "user",
+            "assistant",
+            "tool"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "tool_call_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tool Call Id"
+        },
+        "tool_calls": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Tool Calls",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "content"
+      ],
+      "title": "ModelGatewayChatMessage",
+      "type": "object"
+    },
+    "ModelGatewayChatRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "attribution": {
+          "$ref": "#/$defs/ModelGatewayAttributionContext"
+        },
+        "max_tokens": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Tokens"
+        },
+        "messages": {
+          "items": {
+            "$ref": "#/$defs/ModelGatewayChatMessage"
+          },
+          "minItems": 1,
+          "title": "Messages",
+          "type": "array"
+        },
+        "parallel_tool_calls": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parallel Tool Calls"
+        },
+        "stop": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Stop",
+          "type": "array"
+        },
+        "temperature": {
+          "anyOf": [
+            {
+              "maximum": 2,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature"
+        },
+        "thinking_mode": {
+          "anyOf": [
+            {
+              "enum": [
+                "disabled",
+                "enabled"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thinking Mode"
+        },
+        "tool_choice": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tool Choice"
+        },
+        "tools": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Tools",
+          "type": "array"
+        },
+        "virtual_model_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Virtual Model Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "virtual_model_id",
+        "attribution",
+        "messages"
+      ],
+      "title": "ModelGatewayChatRequest",
+      "type": "object"
+    },
+    "ModelGatewayChatResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_status": {
+          "enum": [
+            "pending",
+            "estimated",
+            "provisional",
+            "settled",
+            "reconciled",
+            "adjusted",
+            "unknown"
+          ],
+          "title": "Cost Status",
+          "type": "string"
+        },
+        "gateway_invocation_id": {
+          "title": "Gateway Invocation Id",
+          "type": "string"
+        },
+        "model_alias": {
+          "title": "Model Alias",
+          "type": "string"
+        },
+        "points": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Points"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "response": {
+          "additionalProperties": true,
+          "title": "Response",
+          "type": "object"
+        },
+        "settlement_amount_cny": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Settlement Amount Cny"
+        },
+        "settlement_currency": {
+          "const": "CNY",
+          "default": "CNY",
+          "title": "Settlement Currency",
+          "type": "string"
+        },
+        "usage": {
+          "items": {
+            "$ref": "#/$defs/ModelGatewayUsageQuantity"
+          },
+          "title": "Usage",
+          "type": "array"
+        }
+      },
+      "required": [
+        "gateway_invocation_id",
+        "model_alias",
+        "response",
+        "usage",
+        "cost_status"
+      ],
+      "title": "ModelGatewayChatResponse",
+      "type": "object"
+    },
+    "ModelGatewayEmbeddingRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "attribution": {
+          "$ref": "#/$defs/ModelGatewayAttributionContext"
+        },
+        "dimensions": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dimensions"
+        },
+        "encoding_format": {
+          "default": "float",
+          "enum": [
+            "float",
+            "base64"
+          ],
+          "title": "Encoding Format",
+          "type": "string"
+        },
+        "input": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Input"
+        },
+        "virtual_model_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Virtual Model Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "virtual_model_id",
+        "attribution",
+        "input"
+      ],
+      "title": "ModelGatewayEmbeddingRequest",
+      "type": "object"
+    },
+    "ModelGatewayEmbeddingResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_status": {
+          "enum": [
+            "pending",
+            "estimated",
+            "provisional",
+            "settled",
+            "reconciled",
+            "adjusted",
+            "unknown"
+          ],
+          "title": "Cost Status",
+          "type": "string"
+        },
+        "gateway_invocation_id": {
+          "title": "Gateway Invocation Id",
+          "type": "string"
+        },
+        "model_alias": {
+          "title": "Model Alias",
+          "type": "string"
+        },
+        "points": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Points"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "response": {
+          "additionalProperties": true,
+          "title": "Response",
+          "type": "object"
+        },
+        "settlement_amount_cny": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Settlement Amount Cny"
+        },
+        "settlement_currency": {
+          "const": "CNY",
+          "default": "CNY",
+          "title": "Settlement Currency",
+          "type": "string"
+        },
+        "usage": {
+          "items": {
+            "$ref": "#/$defs/ModelGatewayUsageQuantity"
+          },
+          "title": "Usage",
+          "type": "array"
+        }
+      },
+      "required": [
+        "gateway_invocation_id",
+        "model_alias",
+        "response",
+        "usage",
+        "cost_status"
+      ],
+      "title": "ModelGatewayEmbeddingResponse",
+      "type": "object"
+    },
+    "ModelGatewayImageReference": {
+      "additionalProperties": false,
+      "properties": {
+        "content_base64": {
+          "maxLength": 28000000,
+          "minLength": 1,
+          "title": "Content Base64",
+          "type": "string"
+        },
+        "media_type": {
+          "enum": [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "media_type",
+        "content_base64"
+      ],
+      "title": "ModelGatewayImageReference",
+      "type": "object"
+    },
+    "ModelGatewayImageRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "attribution": {
+          "$ref": "#/$defs/ModelGatewayAttributionContext"
+        },
+        "n": {
+          "default": 1,
+          "maximum": 9,
+          "minimum": 1,
+          "title": "N",
+          "type": "integer"
+        },
+        "negative_prompt": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Negative Prompt"
+        },
+        "prompt": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Prompt",
+          "type": "string"
+        },
+        "reference_images": {
+          "items": {
+            "$ref": "#/$defs/ModelGatewayImageReference"
+          },
+          "maxItems": 9,
+          "title": "Reference Images",
+          "type": "array"
+        },
+        "response_format": {
+          "default": "url",
+          "enum": [
+            "url",
+            "b64_json"
+          ],
+          "title": "Response Format",
+          "type": "string"
+        },
+        "size": {
+          "anyOf": [
+            {
+              "maxLength": 50,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Size"
+        },
+        "virtual_model_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Virtual Model Id",
+          "type": "string"
+        },
+        "watermark": {
+          "default": false,
+          "title": "Watermark",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "virtual_model_id",
+        "attribution",
+        "prompt"
+      ],
+      "title": "ModelGatewayImageRequest",
+      "type": "object"
+    },
+    "ModelGatewayImageResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_status": {
+          "enum": [
+            "pending",
+            "estimated",
+            "provisional",
+            "settled",
+            "reconciled",
+            "adjusted",
+            "unknown"
+          ],
+          "title": "Cost Status",
+          "type": "string"
+        },
+        "gateway_invocation_id": {
+          "title": "Gateway Invocation Id",
+          "type": "string"
+        },
+        "model_alias": {
+          "title": "Model Alias",
+          "type": "string"
+        },
+        "points": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Points"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "response": {
+          "additionalProperties": true,
+          "title": "Response",
+          "type": "object"
+        },
+        "settlement_amount_cny": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Settlement Amount Cny"
+        },
+        "settlement_currency": {
+          "const": "CNY",
+          "default": "CNY",
+          "title": "Settlement Currency",
+          "type": "string"
+        },
+        "usage": {
+          "items": {
+            "$ref": "#/$defs/ModelGatewayUsageQuantity"
+          },
+          "title": "Usage",
+          "type": "array"
+        }
+      },
+      "required": [
+        "gateway_invocation_id",
+        "model_alias",
+        "response",
+        "usage",
+        "cost_status"
+      ],
+      "title": "ModelGatewayImageResponse",
+      "type": "object"
+    },
+    "ModelGatewaySpeechRecognitionRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "attribution": {
+          "$ref": "#/$defs/ModelGatewayAttributionContext"
+        },
+        "audio": {
+          "$ref": "#/$defs/ModelGatewayAudioInput"
+        },
+        "context_prompt": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Prompt"
+        },
+        "language": {
+          "anyOf": [
+            {
+              "maxLength": 50,
+              "minLength": 2,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Language"
+        },
+        "virtual_model_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Virtual Model Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "virtual_model_id",
+        "attribution",
+        "audio"
+      ],
+      "title": "ModelGatewaySpeechRecognitionRequest",
+      "type": "object"
+    },
+    "ModelGatewaySpeechRecognitionResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_status": {
+          "enum": [
+            "pending",
+            "estimated",
+            "provisional",
+            "settled",
+            "reconciled",
+            "adjusted",
+            "unknown"
+          ],
+          "title": "Cost Status",
+          "type": "string"
+        },
+        "gateway_invocation_id": {
+          "title": "Gateway Invocation Id",
+          "type": "string"
+        },
+        "model_alias": {
+          "title": "Model Alias",
+          "type": "string"
+        },
+        "points": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Points"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "response": {
+          "additionalProperties": true,
+          "title": "Response",
+          "type": "object"
+        },
+        "settlement_amount_cny": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Settlement Amount Cny"
+        },
+        "settlement_currency": {
+          "const": "CNY",
+          "default": "CNY",
+          "title": "Settlement Currency",
+          "type": "string"
+        },
+        "usage": {
+          "items": {
+            "$ref": "#/$defs/ModelGatewayUsageQuantity"
+          },
+          "title": "Usage",
+          "type": "array"
+        }
+      },
+      "required": [
+        "gateway_invocation_id",
+        "model_alias",
+        "response",
+        "usage",
+        "cost_status"
+      ],
+      "title": "ModelGatewaySpeechRecognitionResponse",
+      "type": "object"
+    },
+    "ModelGatewaySpeechSynthesisRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "attribution": {
+          "$ref": "#/$defs/ModelGatewayAttributionContext"
+        },
+        "input": {
+          "maxLength": 100000,
+          "minLength": 1,
+          "title": "Input",
+          "type": "string"
+        },
+        "response_format": {
+          "default": "mp3",
+          "enum": [
+            "mp3",
+            "wav",
+            "opus",
+            "pcm"
+          ],
+          "title": "Response Format",
+          "type": "string"
+        },
+        "sample_rate": {
+          "anyOf": [
+            {
+              "maximum": 48000,
+              "minimum": 8000,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sample Rate"
+        },
+        "virtual_model_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Virtual Model Id",
+          "type": "string"
+        },
+        "voice": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Voice",
+          "type": "string"
+        }
+      },
+      "required": [
+        "virtual_model_id",
+        "attribution",
+        "input",
+        "voice"
+      ],
+      "title": "ModelGatewaySpeechSynthesisRequest",
+      "type": "object"
+    },
+    "ModelGatewaySpeechSynthesisResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_status": {
+          "enum": [
+            "pending",
+            "estimated",
+            "provisional",
+            "settled",
+            "reconciled",
+            "adjusted",
+            "unknown"
+          ],
+          "title": "Cost Status",
+          "type": "string"
+        },
+        "gateway_invocation_id": {
+          "title": "Gateway Invocation Id",
+          "type": "string"
+        },
+        "model_alias": {
+          "title": "Model Alias",
+          "type": "string"
+        },
+        "points": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Points"
+        },
+        "replayed": {
+          "default": false,
+          "title": "Replayed",
+          "type": "boolean"
+        },
+        "response": {
+          "additionalProperties": true,
+          "title": "Response",
+          "type": "object"
+        },
+        "settlement_amount_cny": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Settlement Amount Cny"
+        },
+        "settlement_currency": {
+          "const": "CNY",
+          "default": "CNY",
+          "title": "Settlement Currency",
+          "type": "string"
+        },
+        "usage": {
+          "items": {
+            "$ref": "#/$defs/ModelGatewayUsageQuantity"
+          },
+          "title": "Usage",
+          "type": "array"
+        }
+      },
+      "required": [
+        "gateway_invocation_id",
+        "model_alias",
+        "response",
+        "usage",
+        "cost_status"
+      ],
+      "title": "ModelGatewaySpeechSynthesisResponse",
+      "type": "object"
+    },
+    "ModelGatewayUsageQuantity": {
+      "additionalProperties": false,
+      "properties": {
+        "meter": {
+          "enum": [
+            "input_token",
+            "output_token",
+            "cached_input_token",
+            "uncached_input_token",
+            "cache_creation_token",
+            "audio_input_second",
+            "audio_output_second",
+            "character",
+            "request",
+            "generated_image",
+            "embedding_input_token"
+          ],
+          "title": "Meter",
+          "type": "string"
+        },
+        "quantity": {
+          "title": "Quantity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "meter",
+        "quantity"
+      ],
+      "title": "ModelGatewayUsageQuantity",
+      "type": "object"
+    },
+    "ModelGatewayVirtualModel": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_kind": {
+          "enum": [
+            "chat",
+            "image_generation",
+            "speech_recognition",
+            "speech_synthesis",
+            "embedding"
+          ],
+          "title": "Capability Kind",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "default_physical_model_id": {
+          "title": "Default Physical Model Id",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "enabled": {
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "input_modalities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Input Modalities",
+          "type": "array"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "output_modalities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Output Modalities",
+          "type": "array"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "provider_model_name": {
+          "title": "Provider Model Name",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "capability_kind",
+        "default_physical_model_id",
+        "provider",
+        "provider_model_name",
+        "input_modalities",
+        "output_modalities",
+        "enabled"
+      ],
+      "title": "ModelGatewayVirtualModel",
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.senagent.dev/model-gateway-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/ModelGatewayChatRequest"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewayChatResponse"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewayEmbeddingRequest"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewayEmbeddingResponse"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewayImageRequest"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewayImageResponse"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewaySpeechRecognitionRequest"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewaySpeechRecognitionResponse"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewaySpeechSynthesisRequest"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewaySpeechSynthesisResponse"
+    },
+    {
+      "$ref": "#/$defs/ModelGatewayVirtualModel"
+    }
+  ],
+  "title": "SenAgent model gateway v1 message schemas",
+  "x-senagent-authentication": {
+    "role_token_header": "Authorization",
+    "role_token_scheme": "Bearer",
+    "sdk_key_header": "X-SenAgent-SDK-Key"
+  },
+  "x-senagent-endpoints": {
+    "chat": "/v1/inference/chat/completions",
+    "embeddings": "/v1/inference/embeddings",
+    "images": "/v1/inference/images/generations",
+    "speech_recognition": "/v1/inference/audio/transcriptions",
+    "speech_synthesis": "/v1/inference/audio/speech",
+    "virtual_models": "/v1/management/virtual-models"
+  }
+}

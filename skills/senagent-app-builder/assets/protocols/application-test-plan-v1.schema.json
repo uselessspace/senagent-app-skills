@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ApplicationTestSuite": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./:#-]{0,255}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "contract",
+            "business",
+            "confirmation",
+            "surface"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "command": {
+          "items": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Command",
+          "type": "array"
+        },
+        "working_directory": {
+          "default": ".",
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Working Directory",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 300,
+          "maximum": 1800,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        },
+        "required_cases": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_./:#-]{0,255}$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "title": "Required Cases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "command"
+      ],
+      "title": "ApplicationTestSuite",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "senagent.application-test-plan.v1",
+      "title": "Protocol",
+      "type": "string"
+    },
+    "suites": {
+      "items": {
+        "$ref": "#/$defs/ApplicationTestSuite"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "title": "Suites",
+      "type": "array"
+    }
+  },
+  "required": [
+    "protocol",
+    "suites"
+  ],
+  "title": "ApplicationTestPlan",
+  "type": "object"
+}

@@ -1,0 +1,242 @@
+{
+  "$defs": {
+    "chat_attachment_request_headers": {
+      "additionalProperties": false,
+      "properties": {
+        "content-type": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "x-senagent-agent-id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "x-senagent-content-sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "x-senagent-data-permissions": {
+          "type": "string"
+        },
+        "x-senagent-filename": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "x-senagent-filename",
+        "x-senagent-agent-id",
+        "x-senagent-data-permissions",
+        "x-senagent-content-sha256",
+        "content-type"
+      ],
+      "type": "object"
+    },
+    "error_response": {
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "details": {
+              "type": "object"
+            },
+            "message": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "recoverable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "recoverable"
+          ],
+          "type": "object"
+        },
+        "protocol": {
+          "const": "senagent.application-backend-http.v2"
+        }
+      },
+      "required": [
+        "protocol",
+        "error"
+      ],
+      "type": "object"
+    },
+    "identity_headers": {
+      "additionalProperties": false,
+      "description": "Trusted identity supplied after service-token authentication; business roles and object ACLs belong to the application backend. Identity values use percent-encoded UTF-8; department IDs are encoded individually and comma-separated.",
+      "properties": {
+        "x-senagent-actor-department-ids": {
+          "type": "string"
+        },
+        "x-senagent-actor-display-name": {
+          "type": "string"
+        },
+        "x-senagent-actor-subject-id": {
+          "type": "string"
+        },
+        "x-senagent-actor-username": {
+          "type": "string"
+        },
+        "x-senagent-application-instance-id": {
+          "type": "string"
+        },
+        "x-senagent-application-owner-subject-id": {
+          "type": "string"
+        },
+        "x-senagent-identity-encoding": {
+          "const": "percent-utf8-v1"
+        },
+        "x-senagent-instance-owner-subject-id": {
+          "type": "string"
+        },
+        "x-senagent-organization-id": {
+          "type": "string"
+        },
+        "x-senagent-turn-visibility": {
+          "default": "instance",
+          "description": "Service-authenticated persisted Agent turn audience; actor output must remain private to the requesting subject.",
+          "enum": [
+            "instance",
+            "actor"
+          ]
+        }
+      },
+      "required": [
+        "x-senagent-identity-encoding",
+        "x-senagent-organization-id",
+        "x-senagent-application-instance-id",
+        "x-senagent-actor-subject-id",
+        "x-senagent-actor-username",
+        "x-senagent-actor-display-name",
+        "x-senagent-actor-department-ids",
+        "x-senagent-application-owner-subject-id",
+        "x-senagent-instance-owner-subject-id"
+      ],
+      "type": "object"
+    },
+    "initialize_instance_request": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "template_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "template_version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "template_id",
+        "template_version",
+        "created_at"
+      ],
+      "type": "object"
+    },
+    "operation_request": {
+      "additionalProperties": false,
+      "properties": {
+        "arguments": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "arguments"
+      ],
+      "type": "object"
+    },
+    "success_response": {
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "const": "senagent.application-backend-http.v2"
+        },
+        "result": {
+          "type": "object"
+        },
+        "surface_commands": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "payload": {
+                "type": "object"
+              },
+              "requires_ack": {
+                "default": false,
+                "type": "boolean"
+              },
+              "surface_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "target": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "surface_id",
+              "target",
+              "name",
+              "payload"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "protocol",
+        "result",
+        "surface_commands"
+      ],
+      "type": "object"
+    },
+    "tool_request": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "arguments": {
+          "type": "object"
+        },
+        "data_permissions": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "agent_id",
+        "data_permissions",
+        "arguments"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.senagent.dev/application-backend-http-v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SenAgent application backend HTTP v2 message schemas"
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ApplicationTestCaseResult": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./:#-]{0,255}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "title": "ApplicationTestCaseResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "senagent.application-test-result.v1",
+      "title": "Protocol",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^[a-f0-9]{32}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "suite_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_./:#-]{0,255}$",
+      "title": "Suite Id",
+      "type": "string"
+    },
+    "source_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Source Digest",
+      "type": "string"
+    },
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/ApplicationTestCaseResult"
+      },
+      "maxItems": 10000,
+      "title": "Cases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "protocol",
+    "run_id",
+    "suite_id",
+    "source_digest",
+    "cases"
+  ],
+  "title": "ApplicationTestResult",
+  "type": "object"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SenAgent 应用开发"
+  short_description: "开发和验证 Python 或 Go AI 应用，包含选型、权限与敏感操作确认"
+  default_prompt: "使用 $senagent-app-builder，帮我开发一个资料归档 AI 应用。"

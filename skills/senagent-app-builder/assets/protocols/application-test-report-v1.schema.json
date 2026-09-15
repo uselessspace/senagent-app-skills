@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ApplicationTestCaseResult": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./:#-]{0,255}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ],
+      "title": "ApplicationTestCaseResult",
+      "type": "object"
+    },
+    "ApplicationTestSuiteReport": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_./:#-]{0,255}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "contract",
+            "business",
+            "confirmation",
+            "surface"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "cases": {
+          "items": {
+            "$ref": "#/$defs/ApplicationTestCaseResult"
+          },
+          "title": "Cases",
+          "type": "array"
+        },
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exit Code"
+        },
+        "log_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Log Path"
+        },
+        "cleanup_review_required": {
+          "default": false,
+          "title": "Cleanup Review Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "status",
+        "code"
+      ],
+      "title": "ApplicationTestSuiteReport",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "senagent.application-test-report.v1",
+      "default": "senagent.application-test-report.v1",
+      "title": "Protocol",
+      "type": "string"
+    },
+    "cli_version": {
+      "title": "Cli Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "application_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Application Id"
+    },
+    "source_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Digest"
+    },
+    "plan_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Plan Digest"
+    },
+    "suites": {
+      "items": {
+        "$ref": "#/$defs/ApplicationTestSuiteReport"
+      },
+      "title": "Suites",
+      "type": "array"
+    },
+    "coverage": {
+      "additionalProperties": {
+        "enum": [
+          "passed",
+          "failed",
+          "not_run"
+        ],
+        "type": "string"
+      },
+      "propertyNames": {
+        "enum": [
+          "contract",
+          "business",
+          "confirmation",
+          "surface"
+        ]
+      },
+      "title": "Coverage",
+      "type": "object"
+    },
+    "build_and_startup": {
+      "const": "not_run",
+      "default": "not_run",
+      "title": "Build And Startup",
+      "type": "string"
+    },
+    "live_model": {
+      "const": "not_run",
+      "default": "not_run",
+      "title": "Live Model",
+      "type": "string"
+    },
+    "target_installation": {
+      "const": "not_run",
+      "default": "not_run",
+      "title": "Target Installation",
+      "type": "string"
+    },
+    "next_step": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Next Step"
+    }
+  },
+  "required": [
+    "cli_version",
+    "run_id",
+    "status",
+    "code"
+  ],
+  "title": "ApplicationTestReport",
+  "type": "object"
+}
