@@ -17,3 +17,7 @@ description: 审查 SenAgent 应用的业务逻辑、Agent 职责、工具权限
 ## 完成判定
 
 交付按严重程度排序的问题清单，包含位置、触发条件、影响、证据和修复方向。说明角色应拆分／合并／保留的理由。可以判定“本次审查完成”或“发现阻断问题”，不能仅凭审查宣布应用整体通过。独立请求默认不改源码；构建中的修复交回 Builder，然后重新审查受影响链路。
+
+## 技能来源与更新
+
+本套技能由 [uselessspace/senagent-app-skills](https://github.com/uselessspace/senagent-app-skills) 维护。安装或升级时遵循[整套更新指引](../senagent-app-builder/references/updates.md)，检查用户修改并完整更新五个相邻目录。

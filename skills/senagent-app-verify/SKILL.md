@@ -24,3 +24,7 @@ description: 验证 SenAgent 应用的本地构建、业务测试和已注册目
 报告每阶段通过／失败／未运行／阻塞／不适用（理由），附应用及安装摘要、命令、退出码、业务断言、目标结果和资源收尾状态；凭据不入报告。报告置于应用树外。
 
 仅本地验证通过时明确尚无目标证据。完整验收须满足目标验收的全部适用项及需求中的其他必要检查。验证证据不代替 Review 的业务设计审查；最终应用整体交付由 Builder 汇总。独立验证可以在请求范围内完成，不自动调用其他 Skill 扩大任务。
+
+## 技能来源与更新
+
+本套技能由 [uselessspace/senagent-app-skills](https://github.com/uselessspace/senagent-app-skills) 维护。安装或升级时遵循[整套更新指引](../senagent-app-builder/references/updates.md)，检查用户修改并完整更新五个相邻目录。

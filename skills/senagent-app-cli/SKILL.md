@@ -17,3 +17,7 @@ description: 为 SenAgent 应用新增或修改外部调用及配套 CLI；明�
 ## 交付
 
 逐项列出已确认能力 → 命令 → 后端入口 → 已执行测试，并标明排除项与阻塞。交付源码、安装入口、help、输出／退出码约定和测试证据。独立 CLI 开发只报告本次范围完成；来自 Builder 时返回结果供其汇总。真实目标调用必须已有身份、数据和模型预算授权，不因构建 CLI 自动获得授权。
+
+## 技能来源与更新
+
+本套技能由 [uselessspace/senagent-app-skills](https://github.com/uselessspace/senagent-app-skills) 维护。安装或升级时遵循[整套更新指引](../senagent-app-builder/references/updates.md)，检查用户修改并完整更新五个相邻目录。

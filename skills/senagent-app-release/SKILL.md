@@ -30,3 +30,7 @@ Skill 不内含 CLI，独立 CLI 安装交付尚待完成。缺 CLI 时报告工
 - 不信任未审查应用中的发布脚本／Dockerfile；构建命令会运行代码，精简环境不是沙箱。
 
 输出制品摘要、镜像 digest、目标版本与架构、上传／启用／安装核验状态、残留／回滚限制。Release 完成不代表业务运行通过。
+
+## 技能来源与更新
+
+本套技能由 [uselessspace/senagent-app-skills](https://github.com/uselessspace/senagent-app-skills) 维护。安装或升级时遵循[整套更新指引](../senagent-app-builder/references/updates.md)，检查用户修改并完整更新五个相邻目录。

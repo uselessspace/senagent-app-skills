@@ -55,3 +55,7 @@ description: 从需求到交付创建或迭代 SenAgent AI 原生应用；负责
 [交付阶段](references/workflow.md) 定义阶段名称；Verify 的 [目标验收](../senagent-app-verify/references/target-smoke.md) 是最低运行证据的唯一维护位置。Builder 汇总 Review、Verify、Release 和适用 CLI 的结果，默认须已注册启用并满足全部适用验收才能说整体通过。
 
 用户只要本地或某专项时，仅报告该范围完成及未运行阶段。目标、权限、审批、工具或关键证据缺失时明确阻塞，不能放宽门槛。敏感操作沿用已确认且未变化的范围；缺授权不执行。连续两轮同类修复没有新证据时报告原因，不循环尝试或扩权。
+
+## 技能来源与更新
+
+本套技能由 [uselessspace/senagent-app-skills](https://github.com/uselessspace/senagent-app-skills) 维护。安装或升级时遵循[整套更新指引](references/updates.md)，检查用户修改并完整更新五个相邻目录。

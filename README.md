@@ -52,3 +52,18 @@ Builder 默认整体通过要求应用已注册启用，并完成全部适用的
 - Release 维护打包、审批、发布及安装核验。
 
 本仓库不包含 Runtime、CLI 二进制、工具链或真实凭据。Skill 自身校验不代表某个应用已通过业务或目标验收。
+
+## Intelliland Studio 与后续更新
+
+官方更新来源为 [uselessspace/senagent-app-skills](https://github.com/uselessspace/senagent-app-skills)。Studio 默认内置整套技能；需要提前更新时，可将本仓库 `skills/` 下五个完整目录安装到项目 `.agents/skills/`，优先于内置版本。不要修改已安装应用包。更新前检查自定义修改，完整替换本套目录以清除旧文件，保留其他技能；重新打开项目或开始新会话后确认技能加载。
+
+Studio 维护者从最新检出同步到源码中的内置资源：
+
+```sh
+git pull --ff-only
+# 在 Studio 源码根目录执行，路径指向本仓库的 skills 子目录。
+pnpm --dir apps/desktop run sync:resources --skills-dir /path/to/senagent-app-skills/skills
+pnpm --dir apps/desktop run check:resources
+```
+
+再按目标平台重新打包 Studio。详见[安装与更新](skills/senagent-app-builder/references/updates.md)。
