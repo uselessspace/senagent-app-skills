@@ -1,0 +1,4 @@
+interface:
+  display_name: "SenAgent 应用验证"
+  short_description: "执行本地与注册后真实验收，核对前后端、模型和 CLI 证据"
+  default_prompt: "使用 $senagent-app-verify，验证这个已注册应用的后端和前端最小业务链。"

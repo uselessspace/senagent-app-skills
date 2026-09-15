@@ -1,6 +1,6 @@
 # 验证、调试和失败处理
 
-先区分[验证与交付阶段](workflow.md)。本页的本地校验不上传候选、不注册启用应用，也不要求开发者电脑部署 SenAgent 服务。
+先区分[验证与交付阶段](../../senagent-app-builder/references/workflow.md)。本页的本地校验不上传候选、不注册启用应用，也不要求开发者电脑部署 SenAgent 服务。
 
 ## 官方层级
 
@@ -38,7 +38,7 @@ CLI 参数使用数组而不是 shell 字符串；若已安装的独立 CLI 不�
 
 ## 除 full 以外必需的证据
 
-先完成[逻辑与职责自审](self-review.md)：工具结果与语义审查分别给结论，不能把 full 或合同测试通过当作 Agent 拆分合理的证据。
+构建全流程应已有 [逻辑与职责审查](../../senagent-app-review/references/self-review.md)：工具结果与语义审查分别给结论，不能把 full 或合同测试通过当作 Agent 拆分合理的证据。
 
 1. 业务：每个需求的正反例、持久化、事务、幂等、并发、重启／迁移。
 2. 权限：错 token／伪造 actor、跨组织／部门／实例／对象、共享实例双主体和成员不继承。
@@ -52,17 +52,17 @@ CLI 参数使用数组而不是 shell 字符串；若已安装的独立 CLI 不�
 
 ## 外部调用与个人数据验收
 
-需要外部调用时执行 [CLI 验收](external-cli.md)，将命令级业务测试加入 `application.tests.json`，使用现有 business／confirmation 分类，不新增测试协议类别。缺真实个人凭据或目标服务时，报告客户端联调未运行，不用本地模拟替代。
+需要外部调用时执行 [CLI 验收](../../senagent-app-cli/references/external-cli.md)，将命令级业务测试加入 `application.tests.json`，使用现有 business／confirmation 分类，不新增测试协议类别。缺真实个人凭据或目标服务时，报告客户端联调未运行，不用本地模拟替代。
 
-涉及个人内容时执行 [轮次可见性验收](identity-and-data.md)：双用户同实例、权限撤回、私有轮次改配置后的历史保护，以及工作区／生成物／共享状态隔离。连续对话按 [历史规则](confirmation-and-chat.md) 测试。
+涉及个人内容时执行 [轮次可见性验收](../../senagent-app-builder/references/identity-and-data.md)：双用户同实例、权限撤回、私有轮次改配置后的历史保护，以及工作区／生成物／共享状态隔离。连续对话按 [历史规则](../../senagent-app-builder/references/confirmation-and-chat.md) 测试。
 
 ## 整体通过门槛
 
-本页工程与业务测试通过后，继续执行 [注册后最小验收](target-smoke.md)。注册启用、后端真实业务、适用的 Agent／模型与前端基础验证是整体通过的必要条件；app full、health、候选上传或 action 受理都不能替代。
+完整验收范围内，本页工程与业务测试通过且目标已注册启用后，继续执行 [注册后最小验收](target-smoke.md)。注册启用、后端真实业务、适用的 Agent／模型与前端基础验证是整体通过的必要条件；app full、health、候选上传或 action 受理都不能替代。
 
 ## SenAgent 服务联调
 
-按 CLI help 与目标服务实际提供的能力执行打包、上传候选、确认注册启用和服务内联调，每一步分开报告。目标服务不读取开发者工作区；目标安装验收使用部署者提供的验证环境，不把本地 full 冒充为已注册或真实 Chat 可用。
+打包、上传候选及注册启用由 [Release](../../senagent-app-release/SKILL.md) 在授权范围内执行；本 Skill 接收安装证据后联调，每一步分开报告。目标服务不读取开发者工作区；目标安装验收使用部署者提供的验证环境，不把本地 full 冒充为已注册或真实 Chat 可用。
 
 ## 修复
 

@@ -1,50 +1,54 @@
 # SenAgent App Skills
 
-帮助 Coding Agent 构建、验证和发布独立的 SenAgent AI 原生应用。
+帮助 Coding Agent 构建、审查、验证和发布独立的 SenAgent AI 原生应用。一个总入口，四个可独立触发的专项 Skill。
 
-## 包含的 Skill
+## 五个 Skill
 
-- [senagent-app-builder](skills/senagent-app-builder/SKILL.md)：需求澄清、Python／Go 选型、应用前后端与 Agent 开发、外部调用与配套 CLI 范围确认、业务测试、注册后最小真实验收。
-- [senagent-app-release](skills/senagent-app-release/SKILL.md)：应用打包、OCI、上传候选、注册启用和目标安装验证。
+| Skill | 何时使用 | 交付 |
+| --- | --- | --- |
+| [senagent-app-builder](skills/senagent-app-builder/SKILL.md) | 从需求新建或迭代应用 | 应用实现与完整交付结论 |
+| [senagent-app-cli](skills/senagent-app-cli/SKILL.md) | 增加或修改外部调用及应用命令行 | 已确认范围内的 CLI、说明与命令测试 |
+| [senagent-app-review](skills/senagent-app-review/SKILL.md) | 审查业务逻辑、Agent 职责和权限 | 有源码位置和证据的问题清单 |
+| [senagent-app-verify](skills/senagent-app-verify/SKILL.md) | 本地测试或已注册应用的真实验收 | 分阶段的执行证据与结果 |
+| [senagent-app-release](skills/senagent-app-release/SKILL.md) | 打包、上传、注册或更新应用 | 制品摘要与目标安装状态 |
 
-只维护当前版本，使用最新 SenAgent CLI 和公开协议，不提供旧版兼容分支。本仓库包含 Skill、公开协议 Schema 和测试辅助资产；不包含 SenAgent Runtime、CLI 二进制或语言工具链。
+用户只需调用 Builder，Coding Agent 按阶段加载专项指引，不需要用户逐个调用，也不要求启动多个 Agent。单独调用 Review 不修改应用或触发部署，Verify 不自动发布，Release 的安装成功不等于业务运行验收通过。
 
-## 安装到 Codex
-
-克隆仓库：
+## 安装
 
 ```bash
 git clone https://github.com/uselessspace/senagent-app-skills.git
 cd senagent-app-skills
 ```
 
-将 `skills/senagent-app-builder` 和 `skills/senagent-app-release` 两个完整目录放到 `~/.codex/skills/`。设置了 `CODEX_HOME` 时使用其 `skills/` 子目录。也可以只安装其中一个。更新时先检查本机是否有自定义修改，再替换同名目录，不并存旧版和新版。
+将 `skills/` 下五个完整目录一起放到 `~/.codex/skills/`。设置了 `CODEX_HOME` 时使用其 `skills/` 子目录。五个目录必须保持相邻，因为专项 Skill 按相对路径读取公共规则和资产；可以独立触发，但需要整套安装。
 
-其他 Coding Agent 可使用其支持的 Skill 目录或显式读取对应 `SKILL.md`。
+更新前检查已有目录是否包含自定义修改，处理冲突后完整替换本套五个同名目录，避免旧文件残留；不要把其他 Skill 删除。其他 Coding Agent 使用其支持的 Skill 根目录，并保持五个目录相邻。
 
-## 使用
+只维护最新协议与指引，不保留旧版入口、兼容记录或降级分支。安装不会安装 SenAgent CLI、启动 Runtime、开放权限或生成凭据。
 
-```text
-使用 $senagent-app-builder，帮我开发一个资料归档应用。
-```
-
-Coding Agent 会确认业务范围、是否需要外部调用，以及需要同步交付的 CLI 能力。Go 工具链优先与开发者本机版本保持一致。
-
-默认整体通过要求应用在指定 SenAgent 注册启用，并完成注册后最小真实验证。有前端时必须验证页面及关键操作；有 Agent／模型时必须检查真实完成结果。目标、权限或必要能力缺失应报告阻塞，不能把本地测试通过当成整体验收通过。用户明确只要本地工程时尊重该范围。
+## 使用示例
 
 ```text
+使用 $senagent-app-builder，帮我开发一个资料归档 AI 应用。
+使用 $senagent-app-cli，给这个应用增加 CLI，先确认开放哪些能力。
+使用 $senagent-app-review，检查这个应用的 Agent 职责与权限，不改代码。
+使用 $senagent-app-verify，验证这个已注册应用的前后端最小业务链。
 使用 $senagent-app-release，把这个应用发布到我指定的 SenAgent 服务。
 ```
 
-首次注册仍需平台管理员审批。发布前明确目标、制品摘要和操作范围；已经明确授权且内容未变时不重复确认。
+外部调用必须先确认能力、权限和 CLI 交付范围；需要时与应用同步实现。Go 工具链优先与开发者本机实际安装版本一致。
 
-## 前提
+Builder 默认整体通过要求应用已注册启用，并完成全部适用的最低真实验收：后端业务、Agent／模型完成结果、前端关键操作及约定 CLI。缺目标、权限或证据时报告阻塞。用户明确只要本地或某专项时只完成该范围，不自动扩大授权。
 
-开发者需另行安装当前 SenAgent CLI，以及应用选用的 Python／Go 和按需前端工具链。先运行 `senagent --version` 和 `senagent app --help`。安装本仓库不会安装 CLI、启动 Runtime、开放权限或生成凭据；不要将真实凭据提交到应用工程或聊天中。
+## 依赖与内容归属
 
-## 关键指引
+开发者需另行安装最新 SenAgent CLI 和选用的 Python／Go、按需前端工具链。先运行 `senagent --version` 和 `senagent app --help`；不要求获取 Runtime 源码。
 
-- [外部调用与应用 CLI](skills/senagent-app-builder/references/external-cli.md)
-- [注册后最小验收](skills/senagent-app-builder/references/target-smoke.md)
-- [Go 工具链与工程](skills/senagent-app-builder/references/go.md)
-- [公开协议](skills/senagent-app-builder/references/protocols.md)
+- Builder 维护规划、语言、HTTP／Surface、身份／确认和当前公开 Schema。
+- CLI 维护外部调用与命令交付规则。
+- Review 维护语义审查方法。
+- Verify 维护测试协议用法、验证脚本、测试资产和运行验收门槛。
+- Release 维护打包、审批、发布及安装核验。
+
+本仓库不包含 Runtime、CLI 二进制、工具链或真实凭据。Skill 自身校验不代表某个应用已通过业务或目标验收。

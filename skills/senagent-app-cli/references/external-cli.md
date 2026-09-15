@@ -34,7 +34,7 @@ senagent client --credential-file /private/senagent-credential.json instances
 
 凭据使用用户提供的私有文件，POSIX 权限应为 0600，不放应用包、示例、参数值、日志或测试结果中。正常远程调用使用 HTTPS，不跟随携带凭据的重定向；开发 HTTP 仅在目标明确支持且用户选择时启用，不自动降级。不得自行创建、轮换凭据或开放平台个人凭据策略。
 
-敏感命令先展示稳定对象、版本和影响范围，再按用户确认的交互／无人值守策略执行。非交互模式缺所需确认应失败，不能默认 yes。`--confirm` 或 `--yes` 只是客户端交互约定，不是后端可信人类审批证明；强审批按 [确认规则](confirmation-and-chat.md) 实现，不能让 Coding Agent 自行设置参数冒充人类确认。构建 CLI 的授权不等于授权真实数据变更或付费模型调用。
+敏感命令先展示稳定对象、版本和影响范围，再按用户确认的交互／无人值守策略执行。非交互模式缺所需确认应失败，不能默认 yes。`--confirm` 或 `--yes` 只是客户端交互约定，不是后端可信人类审批证明；强审批按 [确认规则](../../senagent-app-builder/references/confirmation-and-chat.md) 实现，不能让 Coding Agent 自行设置参数冒充人类确认。构建 CLI 的授权不等于授权真实数据变更或付费模型调用。
 
 ## 命令与验收
 

@@ -10,7 +10,7 @@ Go 资产：[confirmationcontract/contract.go](../assets/go/confirmationcontract
 应用有不可逆操作，且已实现自己的预览／确认／提交路径时，连接该路径及真实数据查询。
 没有敏感操作则记录不适用理由，不给最小脚手架硬加删除业务。
 应用目前只有直接删除 API、没有范围／版本／幂等机制时，测试会暴露缺口；不要在测试适配器里补一个假确认服务让测试通过。
-强审批要求仍见[确认与 Chat](confirmation-and-chat.md)，不能因为本测试通过就承诺模型不可绕过。
+强审批要求仍见[确认与 Chat](../../senagent-app-builder/references/confirmation-and-chat.md)，不能因为本测试通过就承诺模型不可绕过。
 
 ## 适配器边界
 

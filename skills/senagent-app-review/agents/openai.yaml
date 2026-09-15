@@ -1,0 +1,4 @@
+interface:
+  display_name: "SenAgent 应用审查"
+  short_description: "审查应用业务、Agent 职责与权限，提供源码证据和修复方向"
+  default_prompt: "使用 $senagent-app-review，审查这个应用的 Agent 职责、业务逻辑与权限，不修改代码。"

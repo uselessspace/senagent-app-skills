@@ -28,7 +28,7 @@ uv run --frozen python -m compileall -q backend
 
 ## 基础测试资产
 
-把本 Skill 的 `assets/python/test_http_contract.py` 复制到新应用 `tests/`；它使用 loopback HTTP 和临时目录，检查 service token、协议／模板匹配、实例幂等与删除隔离、健康端点。
+把Verify 的 [Python 契约测试](../../senagent-app-verify/assets/python/test_http_contract.py) 复制到新应用 `tests/`；它使用 loopback HTTP 和临时目录，检查 service token、协议／模板匹配、实例幂等与删除隔离、健康端点。
 
 更换应用内部布局时只适配启动夹具，保留协议断言。不得引入 `senagent` 私有 import。根据实际业务补充授权、迁移、并发、取消／确认和恢复测试。
 

@@ -62,9 +62,9 @@ Surface 的“确认”按钮本身同样不是防止合法客户端绕过 UI �
 
 ## 测试资产
 
-使用 [语言无关反例集](../assets/confirmation-cases.json)，为选用入口逐条实现测试，不能仅检查 JSON 文件存在。Chat 集成测试检查 choice.required／resolved 和实际工具序列；后端测试检查数据及审批记录；UI 测试检查对话框和点击前后行为。
+使用 [语言无关反例集](../../senagent-app-verify/assets/confirmation-cases.json)，为选用入口逐条实现测试，不能仅检查 JSON 文件存在。Chat 集成测试检查 choice.required／resolved 和实际工具序列；后端测试检查数据及审批记录；UI 测试检查对话框和点击前后行为。
 
-HTTP scaffold 测试只覆盖基础鉴权／生命周期。需要验证敏感操作时，使用[可执行确认断言](confirmation-testing.md)：Python／Go 各有9类本地适配器级断言，必须接应用真实入口及持久化状态；没有适配器不能算通过，其余10条规格仍须补测。若只跑 full 或固定工具响应，真实 Chat 恢复与敏感操作端到端验收仍标记未运行。
+HTTP scaffold 测试只覆盖基础鉴权／生命周期。需要验证敏感操作时，使用[可执行确认断言](../../senagent-app-verify/references/confirmation-testing.md)：Python／Go 各有9类本地适配器级断言，必须接应用真实入口及持久化状态；没有适配器不能算通过，其余10条规格仍须补测。若只跑 full 或固定工具响应，真实 Chat 恢复与敏感操作端到端验收仍标记未运行。
 
 ## 连续对话与历史
 

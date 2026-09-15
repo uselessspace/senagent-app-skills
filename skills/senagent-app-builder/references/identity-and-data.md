@@ -2,7 +2,7 @@
 
 每个私有 Runtime 持有部署者配置的一个长期 SDK Key，安装包不固化 Key。Runtime 已验证的当前用户凭据（OIDC 登录 Token 或应用绑定的个人凭据）与 SDK Key 同时用于网关交互，不做新的凭据交换。
 
-Runtime 验证身份及应用授权。网关按 Key 确定消费者、权威计费组织、模型授权和限流；当前用户凭据只随调用携带，网关不解析／持久化它。个人凭据必须由 Runtime 每次恢复真实 actor 并重新校验当前应用资格，不是 OIDC Token 或角色快照；外部客户端接入见 [外部调用与应用 CLI](external-cli.md)。用户／部门／应用／Agent 标签由 Runtime 提供，是 Key 组织下的归因，不能覆盖 Key 的账单组织。开发／生产使用同 Key 可汇总，不同 Key 可分算，环境由部署者自行隔离。
+Runtime 验证身份及应用授权。网关按 Key 确定消费者、权威计费组织、模型授权和限流；当前用户凭据只随调用携带，网关不解析／持久化它。个人凭据必须由 Runtime 每次恢复真实 actor 并重新校验当前应用资格，不是 OIDC Token 或角色快照；外部客户端接入见 [外部调用与应用 CLI](../../senagent-app-cli/references/external-cli.md)。用户／部门／应用／Agent 标签由 Runtime 提供，是 Key 组织下的归因，不能覆盖 Key 的账单组织。开发／生产使用同 Key 可汇总，不同 Key 可分算，环境由部署者自行隔离。
 
 应用后端拿不到 SDK Key 和原始当前用户凭据；Surface 也拿不到后端 service token。先验证 Runtime service token／协议，再信任它传递的 actor、应用归属人和实例归属人上下文。不接受浏览器伪造 header、工具参数中的 subject／role／scope，也不把归属人 ID 当成业务授权结果。
 

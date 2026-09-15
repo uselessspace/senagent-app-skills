@@ -1,0 +1,4 @@
+interface:
+  display_name: "SenAgent 应用 CLI"
+  short_description: "确认外部调用范围并构建应用 CLI，落实权限、输出和命令测试"
+  default_prompt: "使用 $senagent-app-cli，给这个应用增加 CLI，先确认哪些能力需要外部调用。"

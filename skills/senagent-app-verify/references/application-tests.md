@@ -20,7 +20,7 @@ senagent app test /absolute/my-app --suite backend-contract --format json
 
 ## 增加业务 suite
 
-独立文件 `application.tests.json` 使用[测试计划 Schema](../assets/protocols/application-test-plan-v1.schema.json)，
+独立文件 `application.tests.json` 使用[测试计划 Schema](../../senagent-app-builder/assets/protocols/application-test-plan-v1.schema.json)，
 不是 application.yaml 的新字段。每个 suite 声明唯一 id、category、command argv、working_directory（默认`.`）、
 timeout_seconds（1–1800，默认300）、required_cases。工作目录不得绝对或越界；command 必须是数组，不拼 shell 字符串。
 
@@ -39,14 +39,14 @@ Python 可以调整 discover 目录或编写第二个标准库适配器；Go 调
 | SENAGENT_TEST_RESULT_PATH | 本次全新、位于源码外的 JSON 结果路径 |
 | SENAGENT_TEST_WORK_DIR | 当前 suite 私有且初始为空的测试数据目录 |
 
-适配器在结果路径写入[结果 Schema](../assets/protocols/application-test-result-v1.schema.json)：固定 protocol、上述三项标识和
+适配器在结果路径写入[结果 Schema](../../senagent-app-builder/assets/protocols/application-test-result-v1.schema.json)：固定 protocol、上述三项标识和
 `cases: [{"id": "稳定测试ID", "status": "passed|failed|skipped"}]`。case ID 必须符合 Schema，禁止把用户输入或凭据作为 ID。
 suite 测试失败必须返回非零退出码；不能仅输出 PASS 字样，也不能复制历史 JSON。
 Python 框架异常、失败 subtest、意外成功都应映射为失败；跳过／expected failure 不算通过。
 
 CLI 同时核对进程退出码、报告标识、源码摘要、required_cases 和所有用例结果。零用例、全跳过、部分跳过、重复 ID、
 结果缺失／超限／非法、测试期间改动源码、超时或进程泄漏都失败。
-最终[报告 Schema](../assets/protocols/application-test-report-v1.schema.json)包含原始 source_digest、规范化 plan_digest、各 suite 错误码、
+最终[报告 Schema](../../senagent-app-builder/assets/protocols/application-test-report-v1.schema.json)包含原始 source_digest、规范化 plan_digest、各 suite 错误码、
 用例结果和私有 log_path。这些是本次执行证据，不是密码学证明；恶意应用代码可以伪造自报结果，业务断言仍需评审。
 
 ## 执行边界与排障

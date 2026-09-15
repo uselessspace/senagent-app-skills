@@ -1,4 +1,4 @@
 interface:
   display_name: "SenAgent 应用发布"
-  short_description: "校验并打包 SenAgent AI 应用，经用户确认后上传候选及注册启用到指定服务"
-  default_prompt: "使用 $senagent-app-release 检查并打包这个应用，暂不上传或注册启用。"
+  short_description: "打包上传应用并注册启用，核对制品摘要与目标安装状态"
+  default_prompt: "使用 $senagent-app-release，把这个应用发布到我指定的 SenAgent 服务。"

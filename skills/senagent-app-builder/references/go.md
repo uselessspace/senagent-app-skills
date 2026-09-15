@@ -40,7 +40,7 @@ go build ./...
 
 保持 cmd 程序入口、Gin handler、业务服务／存储的边界；明确请求 context、关闭流程、超时和并发写入。handler 应可用 `httptest` 独立测试。
 
-将 `assets/go/contract_test.go` 复制到 scaffold 的 `backend/internal/appserver/`，运行 go test。它通过 httptest 和临时目录验证 service token、协议／模板、幂等／删除范围；不包含 Runtime 私有 import。新业务包结构变化时适配测试夹具，不删行为断言。
+将 Verify 的 [Go 契约测试](../../senagent-app-verify/assets/go/contract_test.go) 复制到 scaffold 的 `backend/internal/appserver/`，运行 go test。它通过 httptest 和临时目录验证 service token、协议／模板、幂等／删除范围；不包含 Runtime 私有 import。新业务包结构变化时适配测试夹具，不删行为断言。
 
 迁移用追加文件，测试空库、旧库、重复初始化、失败恢复。业务操作与 Chat 确认规则和 Python 一致，语言不会自动提供权限隔离。
 
