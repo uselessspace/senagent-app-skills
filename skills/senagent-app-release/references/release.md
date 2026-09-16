@@ -4,13 +4,15 @@
 
 应用清单只用 v4、Python／Go、backend HTTP v2；只使用最新 CLI／Runtime 的公开协议，缺少必需能力时要求更新，不提供旧版兼容路径。应用业务测试、权限与删除确认、必要 Chat／Surface 测试已有证据；真实模型没测应明确限制。
 
-先准备独立 CLI 并核对帮助；Skill 目录不含 CLI，Intelliland Studio 的 Skill 同步也不等同于 CLI 安装。缺失就记录阻塞，不要求用户取得 Runtime 源码。此处目标指已部署的 SenAgent 服务，本机和内网服务器采用同一应用制品/API 边界，不访问开发者电脑目录。
+Skill 目录不含 CLI。Intelliland Studio 的发行包可在 Skill 目录之外内嵌受控 CLI；先执行 `test -x "${SENAGENT_CLI:-}" && "$SENAGENT_CLI" --version`。变量存在时，必须只执行 `"$SENAGENT_CLI"`，不可调用裸 `senagent`，否则可能错误使用宿主机上另一个版本。Studio 内嵌 CLI 只包含 `app publish` 和 `client`，不包含 package、verify 或 approve；它不是完整开发工具链。变量或可执行文件缺失才记录阻塞，不要求用户取得 Runtime 源码。
+
+独立开发工作区可安装完整 CLI 并按其实际帮助完成打包和 full 验证，但不能因此宣称 Studio 内嵌 CLI 也有同一命令面。此处目标指已部署的 SenAgent 服务，本机和内网服务器采用同一应用制品/API 边界，不访问开发者电脑目录。
 
 目标部署由用户管理，不创建 dev/prod 配置体系。可信开发机完成构建、full 和业务测试；Runtime 注册阶段只校验候选结构、摘要和安装后的后端就绪状态，不执行候选构建命令。容器发布必须携带已构建且按摘要固定的镜像；目标主机不需要应用构建工具链。
 
 ## 仅打包
 
-以下命令中的路径、仓库与 URL 是示范，必须替换成用户明确指定值：
+以下命令仅在可信开发工作区的完整 CLI 中执行；路径、仓库与 URL 是示范，必须替换成用户明确指定值。Studio 内嵌 CLI 不执行此步骤：
 
 ```bash
 senagent app package /work/apps/my-app \
@@ -41,16 +43,16 @@ OCI .sapp 只引用仓库镜像，不包含离线镜像全集；私有目标需�
 ```bash
 chmod 600 /private/new-app-credential.json /private/app-update-credential.json
 
-senagent app publish /work/releases/my-app-0.1.0-oci.sapp \
+"$SENAGENT_CLI" app publish /work/releases/my-app-0.1.0-oci.sapp \
   --credential-file /private/new-app-credential.json --format json
 
-senagent app publish /work/releases/my-app-0.1.1-oci.sapp \
+"$SENAGENT_CLI" app publish /work/releases/my-app-0.1.1-oci.sapp \
   --credential-file /private/app-update-credential.json --update --format json
 ```
 
 首次提交的凭据需要 `application.submit_new`；更新凭据需要绑定目标应用并具有 `application.update`。凭据中的 Runtime 地址覆盖 `--runtime`，不能与登录令牌混用。`application.invoke` 凭据只能调用应用，不能发布。首次上传还要求当前用户具有 Casdoor `application_developer`，并会提交平台审核。更新同时要求 `application_developer` 和该应用的归属人或管理员身份，`platform_admin` 不可替代。展示目标、当前用户权限、ID／版本、对象摘要、替换／权限／数据影响。默认敏感操作需要确认；一次明确批准可以覆盖已展示且完全未变更的步骤，不重复索取同一确认，不把“写代码”当批准。
 
-平台管理员审阅摘要后使用 Studio 或 `senagent app approve <candidate-id> --digest <digest> --revision <revision> --runtime <url> --access-token-file <file>` 批准首次注册。已有应用使用 `app publish --update`，要求归属人或应用管理员身份，无需重复人工审核。凭据 scope 不可扩展，需要新能力时重新签发，旧凭据可以撤销。发布失败先检查原候选和发布记录，不把重新上传视为原请求重试。内容变化需重新提交；`--activate` 已移除。
+平台管理员在 Studio 审阅摘要后批准首次注册；Studio 内嵌 CLI 不提供 `app approve`。已有应用使用 `"$SENAGENT_CLI" app publish --update`，要求归属人或应用管理员身份，无需重复人工审核。凭据 scope 不可扩展，需要新能力时重新签发，旧凭据可以撤销。发布失败先检查原候选和发布记录，不把重新上传视为原请求重试。内容变化需重新提交；`--activate` 已移除。
 
 发布用用户访问凭据，不用模型 SDK Key。凭据文件 owner-only、不在应用目录、避免 shell history／日志；CLI 会拒绝非 owner-only 的凭据文件。
 
