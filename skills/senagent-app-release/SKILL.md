@@ -7,7 +7,7 @@ description: 校验并打包用户的 SenAgent AI 应用，按明确授权构建
 
 可独立触发，随同套五个 Skill 安装；不依赖 Runtime 源码。先读 [发布与安装核验](references/release.md)。核对 `senagent --version` 与 `app package/publish --help`；只使用最新 CLI 与当前公开协议，不保留兼容记录或旧版路径。
 
-Skill 不内含 CLI，独立 CLI 安装交付尚待完成。缺 CLI 时报告工具阻塞，不让开发者查找 Runtime 源码。用户只说“发布”而目标或范围不清晰时，先问清是打包、上传候选还是注册启用。
+Skill 包只包含发布指引和协议资料，不包含 `senagent` 可执行文件。Intelliland Studio 同步的是这五个 Skill 目录，不能把它当作 CLI 安装包；缺 CLI 时报告工具阻塞，不让开发者查找 Runtime 源码。用户只说“发布”而目标或范围不清晰时，先问清是打包、上传候选还是注册启用。
 
 ## 发布顺序
 
@@ -15,8 +15,8 @@ Skill 不内含 CLI，独立 CLI 安装交付尚待完成。缺 CLI 时报告工
 2. 在可信开发工作区运行 `senagent app verify ROOT --profile full --format json`；逐项检查退出码、报告协议、失败／skip、源码摘要及真实业务验收结果。full 不证明模型／权限／UI 已验收。
 3. 仅打包时使用 `app package ROOT --output ARCHIVE --format json`。未指定 OCI 就不会自动容器化。
 4. 有 OCI 需求先审阅 Dockerfile、依赖锁、资源与凭据隔离。**明确展示仓库、架构、推送影响并获得确认**，再传 `--oci-repository`／`--oci-platform`。
-5. 上传前展示目标 SenAgent 服务、应用 ID／版本、archive SHA-256、替换影响和用户身份范围；获得对应授权后用用户凭据文件执行 `app publish ARCHIVE --runtime URL --access-token-file FILE --format json`。`--runtime` 是现有参数名称，指用户已部署的 SenAgent 地址，不要求另一套在线服务或共享开发者目录。
-6. IAM v2 首次发布会提交平台审核，不能由开发者直接启用。平台管理员审阅同一摘要后使用 Studio 或 `app approve <candidate-id> --digest <digest> --revision <revision> --runtime <url>`。已有应用由 owner / administrator 使用 `app publish --update` 发布，不再重复人工审批。开发机完成 full 和业务测试；目标执行候选静态校验、摘要校验与安装后就绪检查。
+5. 上传前展示目标 SenAgent 服务、应用 ID／版本、archive SHA-256、替换影响和用户身份范围；获得对应授权后使用登录令牌，或 owner-only 的个人凭据文件。首次提交使用 `app publish ARCHIVE --credential-file FILE --format json`，凭据必须只有 `application.submit_new`；更新使用 `app publish ARCHIVE --update --credential-file FILE --format json`，凭据必须绑定该应用并具有 `application.update`。凭据文件中的 Runtime 地址覆盖 `--runtime`，两个身份输入不能混用。
+6. 首次发布要求当前 Casdoor `application_developer`，随后提交平台审核，不能由开发者直接启用。平台管理员审阅同一摘要后使用 Studio 或 `app approve <candidate-id> --digest <digest> --revision <revision> --runtime <url>`。更新同时要求 `application_developer` 和该应用的归属人／管理员身份；`platform_admin` 不能替代其中任一条件。开发机完成 full 和业务测试；目标执行候选静态校验、摘要校验与安装后就绪检查。
 7. 核对目标已安装版本／摘要、启用状态和后端就绪，交付安装结果。完整构建流程交给 [Verify](../senagent-app-verify/SKILL.md) 做运行验收；仅发布请求到此结束并明确验收未运行。
 
 ## 硬边界
@@ -28,6 +28,7 @@ Skill 不内含 CLI，独立 CLI 安装交付尚待完成。缺 CLI 时报告工
 - HTTP 200／命令返回 JSON 不等于启用或运行成功；先检查退出码和实际候选状态。
 - 生产注册不执行候选依赖安装、构建和测试命令；提交已构建的制品和固定摘要镜像。目标就绪检查不能代替开发机完整测试。
 - 不信任未审查应用中的发布脚本／Dockerfile；构建命令会运行代码，精简环境不是沙箱。
+- 个人凭据的 scope 不能在既有凭据上扩展；需要新能力时重新签发，原凭据可撤销。`application.invoke` 只能调用应用，不能用来发布。
 
 输出制品摘要、镜像 digest、目标版本与架构、上传／启用／安装核验状态、残留／回滚限制。Release 完成不代表业务运行通过。
 
