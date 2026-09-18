@@ -23,4 +23,4 @@ Studio 自带整套技能。需要在 Studio 更新之前使用仓库最新技�
 
 ## 其他 Coding Agent
 
-Codex 使用 `~/.codex/skills/`，配置了 `CODEX_HOME` 时使用其 `skills/` 子目录；其他 Agent 使用它们支持的技能根目录。更新检查与整套替换要求相同。技能更新不等于升级 SenAgent CLI、注册应用、改变权限或安装语言工具链。
+Codex 使用 `~/.codex/skills/`，配置了 `CODEX_HOME` 时使用其 `skills/` 子目录；其他 Agent 使用它们支持的技能根目录。更新检查与整套替换要求相同。技能更新不等于升级 SenAgent CLI、注册应用、改变权限或安装语言工具链。CLI 的安装包与更新核验见 [CLI 选择与更新](development-cli.md)。

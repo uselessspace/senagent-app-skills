@@ -13,7 +13,7 @@ Skill 包本身只包含发布指引和协议资料，不包含 `senagent` 可�
 
 Studio 内嵌 CLI 只提供 `app publish` 和 `client`：它用于将已经构建的应用制品提交或用个人凭据调用应用，不负责 `app verify`、`app package` 或首次发布审核。构建、full 验证和 OCI 由可信开发工作区完成；首次审核由平台管理员在 Studio 进行。Studio 未提供可执行的 `$SENAGENT_CLI` 时才报告工具阻塞，不让开发者查找 Runtime 源码。
 
-在 Studio 之外，先运行 `senagent --version` 并阅读实际安装版本的帮助；该环境的独立 CLI 可能提供更多开发命令，但不能把它的命令面归因给 Studio 内嵌 CLI。用户只说“发布”而目标或范围不清晰时，先问清是打包、上传候选还是注册启用。
+在 Studio 之外，先运行 `senagent --version` 并阅读实际安装版本的帮助；该环境的独立 CLI 可能提供更多开发命令，但不能把它的命令面归因给 Studio 内嵌 CLI。安装包与修复版本的核验见 [CLI 选择与更新](../senagent-app-builder/references/development-cli.md)。用户只说“发布”而目标或范围不清晰时，先问清是打包、上传候选还是注册启用。
 
 ## 发布顺序
 
@@ -21,7 +21,7 @@ Studio 内嵌 CLI 只提供 `app publish` 和 `client`：它用于将已经构�
 2. 在可信开发工作区使用该环境的完整开发工具运行 full 验证；逐项检查退出码、报告协议、失败／skip、源码摘要及真实业务验收结果。Studio 内嵌 CLI 不提供 `app verify`。full 不证明模型／权限／UI 已验收。
 3. 在可信开发工作区生成应用 archive；Studio 内嵌 CLI 不提供 `app package`，也不会自动容器化。
 4. 有 OCI 需求先审阅 Dockerfile、依赖锁、资源与凭据隔离。**明确展示仓库、架构、推送影响并获得确认**，再传 `--oci-repository`／`--oci-platform`。
-5. 上传前展示目标 SenAgent 服务、应用 ID／版本、archive SHA-256、替换影响和用户身份范围；获得对应授权后使用登录令牌，或 owner-only 的个人凭据文件。在 Studio 中使用 `"$SENAGENT_CLI" app publish ARCHIVE --credential-file FILE --format json`；首次提交的凭据必须具有 `application.submit_new`，更新使用 `--update` 且凭据必须绑定该应用并具有 `application.update`。凭据文件中的 Runtime 地址覆盖 `--runtime`，两个身份输入不能混用。
+5. 上传前展示目标 SenAgent 服务、应用 ID／版本、archive SHA-256、替换影响和用户身份范围；获得对应授权后使用登录令牌，或 owner-only 的个人凭据文件。在 Studio 中使用 `"$SENAGENT_CLI" app publish ARCHIVE --credential-file FILE --format json`；首次提交的凭据必须具有 `application.submit_new`，更新使用 `--update` 且凭据必须绑定该应用并具有 `application.update`。默认使用凭据内的 Runtime 地址；显式传入的 `--runtime` 与其不一致时拒绝请求，两个身份输入不能混用。
 6. 首次发布要求当前 Casdoor `application_developer`，随后提交平台审核，不能由开发者直接启用。平台管理员在 Studio 审阅同一摘要；内嵌 CLI 不提供 `app approve`。更新同时要求 `application_developer` 和该应用的归属人／管理员身份；`platform_admin` 不能替代其中任一条件。开发机完成 full 和业务测试；目标执行候选静态校验、摘要校验与安装后就绪检查。
 7. 核对目标已安装版本／摘要、启用状态和后端就绪，交付安装结果。完整构建流程交给 [Verify](../senagent-app-verify/SKILL.md) 做运行验收；仅发布请求到此结束并明确验收未运行。
 

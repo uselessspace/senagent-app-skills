@@ -50,13 +50,19 @@ chmod 600 /private/new-app-credential.json /private/app-update-credential.json
   --credential-file /private/app-update-credential.json --update --format json
 ```
 
-首次提交的凭据需要 `application.submit_new`；更新凭据需要绑定目标应用并具有 `application.update`。凭据中的 Runtime 地址覆盖 `--runtime`，不能与登录令牌混用。`application.invoke` 凭据只能调用应用，不能发布。首次上传还要求当前用户具有 Casdoor `application_developer`，并会提交平台审核。更新同时要求 `application_developer` 和该应用的归属人或管理员身份，`platform_admin` 不可替代。展示目标、当前用户权限、ID／版本、对象摘要、替换／权限／数据影响。默认敏感操作需要确认；一次明确批准可以覆盖已展示且完全未变更的步骤，不重复索取同一确认，不把“写代码”当批准。
+首次提交的凭据需要 `application.submit_new`；更新凭据需要绑定目标应用并具有 `application.update`。默认使用凭据内的 Runtime 地址；显式传入的 `--runtime` 与其不一致时拒绝请求，不能与登录令牌混用。`application.invoke` 凭据只能调用应用，不能发布。首次上传还要求当前用户具有 Casdoor `application_developer`，并会提交平台审核。更新同时要求 `application_developer` 和该应用的归属人或管理员身份，`platform_admin` 不可替代。展示目标、当前用户权限、ID／版本、对象摘要、替换／权限／数据影响。默认敏感操作需要确认；一次明确批准可以覆盖已展示且完全未变更的步骤，不重复索取同一确认，不把“写代码”当批准。
 
 平台管理员在 Studio 审阅摘要后批准首次注册；Studio 内嵌 CLI 不提供 `app approve`。已有应用使用 `"$SENAGENT_CLI" app publish --update`，要求归属人或应用管理员身份，无需重复人工审核。凭据 scope 不可扩展，需要新能力时重新签发，旧凭据可以撤销。发布失败先检查原候选和发布记录，不把重新上传视为原请求重试。内容变化需重新提交；`--activate` 已移除。
 
 发布用用户访问凭据，不用模型 SDK Key。凭据文件 owner-only、不在应用目录、避免 shell history／日志；CLI 会拒绝非 owner-only 的凭据文件。
 
 检查退出码和结果：即使 --format json，错误可能为文本 FAIL；不能解析失败后拿旧包继续。取消／无回应不上传或启用；失效 token 报告身份问题，不轮换部署 Key。
+
+## 个人凭据页面缺少发布选项
+
+用途中的“提交新应用审核”和允许操作中的“发布应用更新”来自服务端当前可签发范围。缺少选项时先检查当前账号的 Casdoor `application_developer` 角色；更新还需检查目标应用归属人／管理员身份及个人凭据开放策略。仅有 `platform_admin` 或仅为应用归属人都不足以获得更新资格，不能通过修改前端显示或凭据 JSON 绕过。
+
+由有权限的管理员在用户授权范围内修正配置后，刷新或重新打开个人凭据页面，确认目标应用出现“发布应用更新”，再签发勾选该操作的新凭据。原有仅含 `application.invoke` 的凭据不会随角色变化自动增加 scope；下载后设置文件权限，再继续已授权发布。不要在诊断输出中展示密钥。
 
 ## 安装核验与交接
 

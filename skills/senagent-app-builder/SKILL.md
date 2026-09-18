@@ -22,7 +22,7 @@ description: 从需求到交付创建或迭代 SenAgent AI 原生应用；负责
 
 ## 实现
 
-先执行 `senagent --version`、`senagent app --help`，核对 [当前协议](references/protocols.md)。缺独立 CLI 时报告依赖阻塞，可继续设计和不依赖 CLI 的实现，不要求开发者获取 Runtime 源码。
+先按 [CLI 选择与更新](references/development-cli.md) 确认入口与命令范围，再核对 [当前协议](references/protocols.md)。缺完整开发 CLI 时报告依赖阻塞，可继续设计和不依赖 CLI 的实现，不要求开发者获取 Runtime 源码。
 
 新建使用 `senagent app scaffold ABSOLUTE_ROOT --id APP_ID --language python|go`，不得覆盖非空目录。按语言指导对齐工具链后，用 Verify 建立脚手架基线，再增量实现业务；已有应用不重新 scaffold。
 

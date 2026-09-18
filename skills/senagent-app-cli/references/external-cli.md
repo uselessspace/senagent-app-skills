@@ -15,7 +15,7 @@
 
 ## 平台入口与客户端边界
 
-先核对实际安装的 `senagent --version`、`senagent --help`、`senagent client --help` 和目标公开协议。只使用当前个人凭据客户端和公开协议，不保留旧版调用路径。命令缺失时要求更新 CLI／目标并报告能力阻塞，可先完成应用内 CLI 参数、输出和本地测试，不猜私有 API。
+先按 [CLI 选择与更新](../../senagent-app-builder/references/development-cli.md) 确认入口，再核对 `--version`、`--help`、`client --help` 和目标公开协议。以下裸 `senagent` 示例适用于独立安装环境；Studio 中必须替换为 Host 提供的 `"$SENAGENT_CLI"`。只使用当前个人凭据客户端和公开协议，不保留旧版调用路径。命令缺失时要求更新 CLI／目标并报告能力阻塞，可先完成应用内 CLI 参数、输出和本地测试，不猜私有 API。
 
 现有客户端通过用户导出的应用绑定个人凭据访问 Runtime。只读发现示例（替换为用户明确提供的私有凭据文件路径）：
 

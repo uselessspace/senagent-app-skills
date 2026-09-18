@@ -11,7 +11,7 @@ senagent app verify /absolute/my-app --profile smoke --format json
 senagent app verify /absolute/my-app --profile full --format json
 ```
 
-替换为实际应用路径。static 验结构；build 执行语言依赖／声明测试与构建、Surface 构建；smoke 启动、health、实例创建／幂等／删除／清理以及静态入口；full 组合 build 和 smoke。
+以上命令使用完整开发 CLI，Studio 内嵌 CLI 不提供 verify；入口与安装核验见 [CLI 选择与更新](../../senagent-app-builder/references/development-cli.md)。替换为实际应用路径。static 验结构；build 执行语言依赖／声明测试与构建、Surface 构建；smoke 启动、health、实例创建／幂等／删除／清理以及静态入口；full 组合 build 和 smoke。
 
 报告 protocol 为 senagent.application-verification-report.v1。full 成功通常 achieved_level=runtime_ready，**不是 function_ready**。必要 check 缺失／skip、CLI 退出失败都不能通过。没有 Surface 的两个 Surface check 可以 skipped；有 Surface 而缺依赖不可以跳过。
 
@@ -33,6 +33,8 @@ CLI 参数使用数组而不是 shell 字符串；若已安装的独立 CLI 不�
 脚本对可信工作区运行真实 CLI，不主动调用模型或发布应用。脚本启动 CLI 时继承调用者环境，官方本地 verifier 再为应用构建与启动筛选环境；两者都不是操作系统或网络沙箱。不要在高权限环境运行不可信应用。CLI 的 stdout／stderr 合计超过 2 MB、超时或同进程组有残留都会失败并清理该组；原始输出不写入门禁报告。脱离进程组的 daemon／容器仍不能保证回收，出现 cleanup_review_required 时只核查本次资源，不全局 kill／docker prune。
 
 `smoke.process-cleanup` 失败时，官方 verifier 会在该 check 中给出本次受限恢复目录；其中只保留脱敏日志、说明和可用的精确 CID 所有权证据。按该路径逐项处理后重新验证，不按容器名猜测归属，也不删除整个系统缓存或临时目录。
+
+macOS 上已退出子进程的权限误报还需核对 [CLI 清理修复与安装包](../../senagent-app-builder/references/development-cli.md)。版本号相同不能证明修复已安装；更新后仍须重跑验证，不能免除残留检查。
 
 门禁在专用临时 cwd 中启动 CLI，并显式传入临时 `--cache-dir`，避免缓存进入应用目录造成摘要漂移。不会读取或切换已部署服务的环境。临时缓存和日志随退出清理，需深入诊断时用官方 verify 指定应用树外的 `--cache-dir` 重跑并保留脱敏报告；门禁输出中的临时日志路径在退出后不可用。不要把报告／缓存写回应用目录。
 

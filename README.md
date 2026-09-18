@@ -43,7 +43,7 @@ Builder 默认整体通过要求应用已注册启用，并完成全部适用的
 
 ## 依赖与内容归属
 
-开发者需另行安装最新 SenAgent CLI 和选用的 Python／Go、按需前端工具链。先运行 `senagent --version` 和 `senagent app --help`；不要求获取 Runtime 源码。
+开发者需另行安装最新 SenAgent CLI 和选用的 Python／Go、按需前端工具链。不要求获取 Runtime 源码。完整开发 CLI 与 Studio 内嵌 CLI 的能力、安装包校验及更新方式见 [CLI 选择与更新](skills/senagent-app-builder/references/development-cli.md)。
 
 - Builder 维护规划、语言、HTTP／Surface、身份／确认和当前公开 Schema。
 - CLI 维护外部调用与命令交付规则。
